@@ -1,0 +1,44 @@
+pipeline {
+  agent any
+  stages {
+    stage('ant version') {
+      steps {
+        sh '/usr/local/bin/ant -version'
+      }
+    }
+    stage('Nettoyage') {
+      steps {
+        sh '/usr/local/bin/ant clean'
+      }
+    }
+    stage('Initialisation') {
+      steps {
+        sh '/usr/local/bin/ant init'
+      }
+    }
+    stage('Analyse statique et compilation en parallèle') {
+      parallel {
+        stage('Analyse Statique du Code') {
+          steps {
+            sh '/usr/local/bin/ant checkstyle'
+            recordIssues(
+              enabledForFailure: true, aggregatingResults: true,
+              tools: [java(), checkStyle(pattern: 'reports/checkstyle_*.xml', reportEncoding: 'UTF-8')]
+            )
+          }
+        }
+        stage('Compilation') {
+          steps {
+            sh '/usr/local/bin/ant compile'
+          }
+        }
+      }
+    }
+    stage('Tests Unitaires') {
+      steps {
+        sh '/usr/local/bin/ant junit'
+        junit 'reports/TEST-tests*.xml'
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+<project name="HR Project" default="all" basedir=".">
+	<description>
+		Build file for HR project
+	</description>
+	
+	<taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
+	         classpath="lib/checkstyle-8.17-all.jar"/>
+	
+	<!-- set global properties for this build -->
+	<property name="src.dir" location="src"/>
+	<property name="build.dir" location="build"/>
+	<property name="dist.dir" location="dist"/>
+	<property name="vendor.lib.dir" location="lib"/>
+	<property name="reports.dir" location="reports"/>
+	
+	<!-- Project classes path -->
+	<path id="project.classpath">
+		<pathelement location="${build.dir}"/>
+		<fileset dir="${vendor.lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	
+	<target name="all" depends="clean,init,compile,junit,checkstyle,dist"/>
+	
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp/>
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build.dir}"/>
+		<!-- Create the reports directory used by static code analysis tools and testing tools -->
+		<mkdir dir="${reports.dir}"/>
+	</target>
+
+	<!-- Compilation -->
+	<target name="compile" depends="init" description="compile the source">
+		<!-- Compile the Java code from ${src.dir} into ${build.dir} -->
+		<javac srcdir="${src.dir}" destdir="${build.dir}">
+			<classpath refid="project.classpath"/>
+		</javac>
+	</target>
+	
+	<!-- Unit Testing -->
+	<target name="junit" depends="compile">
+		<junit haltonfailure="true">
+			<classpath refid="project.classpath"/>			
+			<formatter type="xml" usefile="yes"/>
+			<batchtest fork="yes" todir="${reports.dir}">
+				<fileset dir="${build.dir}" includes="**/*Test.class"/>
+			</batchtest>
+		</junit>
+	</target>
+	
+	<!-- Static Code Analysis with Checkstyle -->
+	<target name="checkstyle" description="Generates a report of code convention violations.">
+	  <checkstyle config="docs/sun_checks.xml"
+	              failureProperty="checkstyle.failure"
+	              failOnViolation="false">
+	    <formatter type="xml" tofile="${reports.dir}/checkstyle_report.xml"/>
+	    <fileset dir="${src.dir}" includes="**/*.java"/>
+	  </checkstyle>
+	  <!--<style in="checkstyle_report.xml" out="checkstyle_report.html" style="checkstyle.xsl"/>-->
+	</target>
+
+	<target name="dist" depends="compile" description="generate the distribution">
+		<!-- Create the distribution directory -->
+		<mkdir dir="${dist.dir}/lib"/>
+
+		<!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+		<jar jarfile="${dist.dir}/lib/hr-${DSTAMP}.jar" basedir="${build.dir}"/>
+	</target>
+
+	<target name="clean" description="clean up">
+		<!-- Delete the ${reports.dir}, ${build.dir} and ${dist.dir} directory trees -->
+		<delete dir="${reports.dir}"/>
+		<delete dir="${build.dir}"/>
+		<delete dir="${dist.dir}"/>
+	</target>
+</project>
