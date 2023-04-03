@@ -1,6 +1,6 @@
 <project name="HR Project" default="all" basedir=".">
 	<description>
-		Build file for HR project
+		Build file for Human Resourses project
 	</description>
 	
 	<taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
