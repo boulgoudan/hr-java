@@ -27,7 +27,7 @@ public class Prog {
         System.out.println("P1 Age: " + P1.getAge());
         //
         Person centenaire =  new Person("Roberto", "Gonzales", "Male", "1875/10/1", "username@techcompany.com");
-		System.out.println("Age:: " + centenaire.getAge());
+		System.out.println("Age: " + centenaire.getAge());
 	}
 
 }
