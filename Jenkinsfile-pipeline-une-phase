@@ -3,12 +3,12 @@ pipeline {
   stages {
     stage('ant version') {
       steps {
-        sh '/usr/local/bin/ant -version'
+        sh '/usr/bin/ant -version'
       }
     }
     stage('Exécuter toutes les cibles') {
       steps {
-        sh '/usr/local/bin/ant all'
+        sh '/usr/bin/ant all'
         recordIssues(
           enabledForFailure: true, aggregatingResults: true,
           tools: [java(), checkStyle(pattern: 'reports/checkstyle_*.xml', reportEncoding: 'UTF-8')]

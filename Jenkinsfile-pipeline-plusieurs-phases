@@ -3,22 +3,22 @@ pipeline {
   stages {
     stage('ant version') {
       steps {
-        sh '/usr/local/bin/ant -version'
+        sh '/usr/bin/ant -version'
       }
     }
     stage('Nettoyage') {
       steps {
-        sh '/usr/local/bin/ant clean'
+        sh '/usr/bin/ant clean'
       }
     }
     stage('Initialisation') {
       steps {
-        sh '/usr/local/bin/ant init'
+        sh '/usr/bin/ant init'
       }
     }
     stage('Analyse Statique du Code') {
       steps {
-        sh '/usr/local/bin/ant checkstyle'
+        sh '/usr/bin/ant checkstyle'
         recordIssues(
           enabledForFailure: true, aggregatingResults: true,
           tools: [java(), checkStyle(pattern: 'reports/checkstyle_*.xml', reportEncoding: 'UTF-8')]
@@ -27,12 +27,12 @@ pipeline {
     }
     stage('Compilation') {
       steps {
-        sh '/usr/local/bin/ant compile'
+        sh '/usr/bin/ant compile'
       }
     }
     stage('Tests Unitaires') {
       steps {
-        sh '/usr/local/bin/ant junit'
+        sh '/usr/bin/ant junit'
         junit 'reports/TEST-tests*.xml'
       }
     }
