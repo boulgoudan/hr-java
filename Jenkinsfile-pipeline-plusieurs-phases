@@ -1,7 +1,7 @@
 pipeline {
   agent any
   stages {
-    stage('ant version') {
+    stage('Version de ant') {
       steps {
         sh '/usr/bin/ant -version'
       }

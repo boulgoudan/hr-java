@@ -23,6 +23,7 @@
 	
 	<target name="all" depends="clean,init,compile,junit,checkstyle,dist"/>
 	
+	<!-- Initialisation -->
 	<target name="init">
 		<!-- Create the time stamp -->
 		<tstamp/>
@@ -40,7 +41,7 @@
 		</javac>
 	</target>
 	
-	<!-- Unit Testing -->
+	<!-- Tests Unitaires -->
 	<target name="junit" depends="compile">
 		<junit haltonfailure="true">
 			<classpath refid="project.classpath"/>			
@@ -51,7 +52,7 @@
 		</junit>
 	</target>
 	
-	<!-- Static Code Analysis with Checkstyle -->
+	<!-- Analyse Statique du Code -->
 	<target name="checkstyle" description="Generates a report of code convention violations.">
 	  <checkstyle config="docs/sun_checks.xml"
 	              failureProperty="checkstyle.failure"
@@ -62,6 +63,7 @@
 	  <!--<style in="checkstyle_report.xml" out="checkstyle_report.html" style="checkstyle.xsl"/>-->
 	</target>
 
+    <!-- Création de la distribution (fichier JAR) -->
 	<target name="dist" depends="compile" description="generate the distribution">
 		<!-- Create the distribution directory -->
 		<mkdir dir="${dist.dir}/lib"/>
@@ -70,6 +72,7 @@
 		<jar jarfile="${dist.dir}/lib/hr-${DSTAMP}.jar" basedir="${build.dir}"/>
 	</target>
 
+    <!-- Netoyage -->
 	<target name="clean" description="clean up">
 		<!-- Delete the ${reports.dir}, ${build.dir} and ${dist.dir} directory trees -->
 		<delete dir="${reports.dir}"/>

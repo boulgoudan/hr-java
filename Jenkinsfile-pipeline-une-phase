@@ -1,11 +1,6 @@
 pipeline {
   agent any
   stages {
-    stage('ant version') {
-      steps {
-        sh '/usr/bin/ant -version'
-      }
-    }
     stage('Exécuter toutes les cibles') {
       steps {
         sh '/usr/bin/ant all'

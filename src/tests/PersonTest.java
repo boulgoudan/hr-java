@@ -25,7 +25,7 @@ public class PersonTest extends TestCase {
   @Test
   public void testGetName() {
     Person p1 = new Person("Albert", "Lachance", "Male", "1989/05/25", "username@company.com");
-    assertEquals("Albert Lachance", p1.getName());
+    assertEquals("Albert LACHANCE", p1.getName());
   }
 
   @Test
