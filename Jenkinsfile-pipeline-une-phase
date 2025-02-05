@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Exécuter toutes les cibles') {
       steps {
-        sh '/usr/bin/ant all'
+        sh '/opt/homebrew/bin/ant all'
         recordIssues(
           enabledForFailure: true, aggregatingResults: true,
           tools: [java(), checkStyle(pattern: 'reports/checkstyle_*.xml', reportEncoding: 'UTF-8')]
